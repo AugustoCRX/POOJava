@@ -2,6 +2,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DataFrame{
 
@@ -87,14 +89,15 @@ public class DataFrame{
         int[] matrixSize = getSize(false);
         int numRows = matrixSize[1];
         int numCols = matrixSize[0] + 1;
+        System.out.println(numCols);
         String[][] resizedRows = new String[numRows][numCols];
 
         //Primeiro loop responsável por percorrer as linhas da matriz
         //Caso o array seja vazio, ele substitui os valores da coluna criada por zeros
         if (columnValues.isEmpty()){
             for (int i = 0; i < numRows; i++){
-                for (int j = 0; j <= numCols; j++){
-                    if (j == numCols){
+                for (int j = 0; j < numCols; j++){
+                    if (j == numCols-1){
                         resizedRows[i][j] = "0";
                     } else {
                         resizedRows[i][j] = rows[i][j];
@@ -105,9 +108,9 @@ public class DataFrame{
         } else {
             try {
                 for (int i = 0; i < numRows; i++){
-                    for (int j = 0; j<= numCols; j++){
-                        if (j == numCols){
-                            resizedRows[i][j] = columnValues.get(j);
+                    for (int j = 0; j < numCols; j++){
+                        if (j == numCols-1){
+                            resizedRows[i][j] = columnValues.get(i);
                         } else {
                             resizedRows[i][j] = rows[i][j];
                         }
@@ -153,5 +156,30 @@ public class DataFrame{
             System.out.println(rows[i][columnIndex]);
         }
     }
+
+    public void createCSV() throws IOException {
+
+    File csvFile = new File("Java-POO.csv");
+    FileWriter fileWriter = new FileWriter(csvFile);
+
+        for (String[] data : rows) {
+        StringBuilder line = new StringBuilder();
+        for (int i = 0; i < data.length; i++) {
+            //Verifica se o dado é nulo, se ele for nulo, ele será substituido por uma String vazia
+            if (data[i] == null){
+                data[i] = "";
+            }
+            line.append("\"");
+            line.append(data[i].replaceAll("\"","\"\""));
+            line.append("\"");
+            if (i != data.length - 1) {
+                line.append(',');
+            }
+        }
+        line.append("\n");
+        fileWriter.write(line.toString());
+    }
+        fileWriter.close();
+}
 
 }
