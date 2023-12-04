@@ -90,6 +90,7 @@ public class DataFrame{
         String[][] resizedRows = new String[numRows][numCols];
 
         //Primeiro loop responsável por percorrer as linhas da matriz
+        //Caso o array seja vazio, ele substitui os valores da coluna criada por zeros
         if (columnValues.isEmpty()){
             for (int i = 0; i < numRows; i++){
                 for (int j = 0; j <= numCols; j++){
@@ -100,12 +101,15 @@ public class DataFrame{
                     }
                 }
             }
+        //Condicional responsável por adicionar o array novo
         } else {
             try {
                 for (int i = 0; i < numRows; i++){
                     for (int j = 0; j<= numCols; j++){
                         if (j == numCols){
                             resizedRows[i][j] = columnValues.get(j);
+                        } else {
+                            resizedRows[i][j] = rows[i][j];
                         }
                     }
                 }
